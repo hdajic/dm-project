@@ -5,9 +5,10 @@ from sklearn.model_selection import train_test_split
 
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.ensemble import RandomForestClassifier
 
 my_sheet = 'COVID19_line_list_data'
-file_name = 'COVID 19 - Dataset1.xlsx'
+file_name = 'COVID19-Dataset.xlsx'
 
 df = pd.DataFrame(pd.read_excel(file_name, sheet_name = my_sheet).columns).to_numpy()
 df_data = pd.DataFrame(pd.read_excel(file_name, sheet_name = my_sheet)).to_numpy()
@@ -41,15 +42,36 @@ columns = numpy.delete(df, [1, 2, 3, 4, 11])
 df = columns
 #########################################################
 
+print("Data shape = ", df_data.shape)
+print("Labels shape = ", df.shape)
+
+#for i in range(len(df_data[0])):
+#     print(df_data[0][i])
+
+
+
 df_data = df_data.transpose()
 
 X_train, X_test, y_train, y_test = train_test_split(df_data, df)
 
-scaler = MinMaxScaler()
-X_train = scaler.fit_transform(X_train)
-X_test = scaler.transform(X_test)
 
-knn = KNeighborsClassifier()
-knn.fit(X_train, y_train)
-print('Accuracy of K-NN classifier on training set: {:.2f}'
-     .format(knn.score(X_train, y_train)))
+
+#################### Knn algorithm ###########################
+#scaler = MinMaxScaler()
+#X_train = scaler.fit_transform(X_train)
+#X_test = scaler.transform(X_test)
+#
+#knn = KNeighborsClassifier()
+#knn.fit(X_train, y_train)
+#print('Accuracy of K-NN classifier on training set: {:.2f}'
+#     .format(knn.score(X_train, y_train)))
+##############################################################
+
+
+################### Random forest ############################
+rf = RandomForestClassifier(n_estimators=100)
+rf.fit(X_train, y_train)
+
+predictions = rf.predict(X_test)
+#print(predictions)
+##############################################################
