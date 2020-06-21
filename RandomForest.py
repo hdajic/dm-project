@@ -95,6 +95,6 @@ class RandomForest:
         print('Gender accuracy score: ', accuracy_score(genderData, self.gender_axis))
 
     def deathScore(self, deathData):
-        print('Death score confusion matrix: ', confusion_matrix(deathData,self.death_axis))
-        print('Deaht score classification report: ', classification_report(deathData,self.death_axis))
-        print('Deaht accuracy score: ', accuracy_score(deathData, self.death_axis))
+        print('Death score confusion matrix: \n', confusion_matrix(deathData,self.death_axis))
+        print('Deaht score classification report: \n', classification_report(deathData,self.death_axis))
+        print('Deaht accuracy score: \n', accuracy_score(deathData, self.death_axis))

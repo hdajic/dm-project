@@ -8,6 +8,7 @@ from sklearn.cluster import KMeans
 from sklearn import preprocessing
 from sklearn.cluster import MeanShift
 import matplotlib.pyplot as plt
+from sklearn.datasets import make_classification
 
 my_sheet = 'COVID19_line_list_data'
 file_name = 'COVID19-Dataset.xlsx'
@@ -44,7 +45,7 @@ rf = RandomForest(X_train, y_train)
 
 rf.predict(X_test)
 rf.set_prediction_data()
-rf.plot_num_deaths_per_age()
+#rf.plot_num_deaths_per_age()
 #rf.plot_num_deaths_per_gender()
 
 #rf.ageScore(age)
@@ -53,17 +54,17 @@ rf.plot_num_deaths_per_age()
 ###############################
 
 ### KNN ###
-#knn = Knn(X_train, y_train)
+knn = Knn(X_train, y_train)
 
-#knn.predict(X_test)
-#knn.set_prediction_data()
+knn.predict(X_test)
+knn.set_prediction_data()
 #knn.plot_num_patient_neg_summary_based_on_gender()
+#knn.plot_num_patient_neg_summary_baseg_on_age()
+#knn.plot_num_patient_neg_summary_based_on_is_from_wuhan()
 
 #knn.ageScore(age)
 #knn.genderScore(gender)
 #knn.deathScore(death)
-
-#knn.crossValidation(X, Y)
 ###################################
 
 T_1 = df.drop(columns=['reporting date', 'summary', 'location', 'country', 'symptom', 'death'])
@@ -74,8 +75,7 @@ T = np.array(T_1)
 T = preprocessing.scale(T)
 Z = np.array(df['death'])
 
-
-'''
+##### Kmeans clustering ###########
 model = KMeans(n_clusters=2)
 model.fit(T)
 correct = 0
@@ -88,10 +88,24 @@ for i in range(len(T)):
 
 print(correct/len(T))
 
+
+############### Mean Shift clustering ###############################
 '''
-'''
+X = np.vstack((X_test.age, X_test.ave_sentiment.astype(float))).T
 model = MeanShift()
-f = model.fit(T)
+f = model.fit_predict(T)
+'''
+'''
+for cluster in clusters:
+    row_ix = np.where(f1 == cluster)
+    plt.scatter(X[row_ix, 0], X[row_ix, 1])
+
+plt.xlabel('Person age')
+plt.ylabel('Average sentiment')
+plt.title('Diagnosis in function of the age')
+plt.show()
+'''
+
 labels = model.labels_
 cluster_centers = model.cluster_centers_
 
@@ -109,5 +123,5 @@ for i in range(n_clusters_):
     death_cluster = temp_df[(temp_df['death']==1)]
     death_rate = len(death_cluster)/len(temp_df)
     death_rates[i] = death_rate
-print(death_rates)
-'''
+print('Death rate: ', death_rates)
+
