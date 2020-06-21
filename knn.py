@@ -5,6 +5,8 @@ from pathlib import Path
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 from sklearn.model_selection import cross_val_score
 
+
+
 class Knn:
     def __init__(self, x_train, y_train):
         self.x_train = x_train
@@ -117,3 +119,4 @@ class Knn:
 
     def crossValidation(self, X, Y):
         return cross_val_score(self.knn, X, Y, cv=5, scoring='accuracy')
+
